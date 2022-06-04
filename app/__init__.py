@@ -17,7 +17,8 @@ def game():
         freader = csv.reader(fnames)
         for row in freader:
             names.append(row)
-    randelement = random.choice(names)
+    randelement = random.choice(names)[0]
+    # print(randelement)
     temp = []
     temp.append(randelement)
     with open("displaynames.txt", 'w') as dnames:
@@ -28,7 +29,7 @@ def game():
         reader = csv.reader(seenames)
         for row in reader:
             displaynames.append(row)
-    return render_template('game.html', display=displaynames)
+    return render_template('game.html', display=displaynames[0])
 
 @app.route("/remember")
 def remember():
@@ -46,14 +47,17 @@ def answer():
     try:
         names = []
         answer = request.args.get('ans')
+        print(answer)
         if ',' in answer:
             names = answer.split(",")
         else:
-            names.append(answer[0]) 
-        if names == displaynames:
+            names.append(answer) 
+        print(names)
+        print(displaynames)
+        if names == displaynames[0]:
             return redirect("/game")
         else:
-            message = "Your score is " + names.displaynames() - 1
+            message = "Your score is " + (displaynames.len() - 1)
             with open("displaynames.txt", 'r') as delnames:
                 delnames.truncate()
             return render_template('home.html', msg=message)
